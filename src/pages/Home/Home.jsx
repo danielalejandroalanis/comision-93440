@@ -1,31 +1,9 @@
-import { useEffect, useState } from "react";
 import Products from "../../components/Products/Products";
-import { getProducts } from "../../services/products.service";
+import { useProducts } from "../../hooks/useProducts";
 import styles from "./Home.module.css";
 
 const Home = () => {
-  const [products, setProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    async function loadProducts() {
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        const productsFromApi = await getProducts();
-        setProducts(productsFromApi);
-      } catch (requestError) {
-        console.error(requestError);
-        setError("No pudimos cargar los productos. Intentá nuevamente.");
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    loadProducts();
-  }, []);
+  const { products, isLoading, error } = useProducts();
 
   return (
     <>
@@ -54,11 +32,7 @@ const Home = () => {
           </div>
           <p>Elegidos para vos</p>
         </div>
-        <Products
-          products={products}
-          isLoading={isLoading}
-          error={error}
-        />
+        <Products products={products} isLoading={isLoading} error={error} />
       </section>
     </>
   );

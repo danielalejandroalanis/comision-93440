@@ -1,24 +1,32 @@
-import { BASE_URL } from "../constants/api";
+import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase/config";
+
+import { PRODUCTS_COLLECTION_NAME } from "../constants/products";
 
 export async function getProducts() {
-  const response = await fetch(`${BASE_URL}/products?limit=12`);
-  if (!response.ok) throw new Error("No se pudieron obtener los productos");
+  const productsCollection = collection(db, PRODUCTS_COLLECTION_NAME);
 
-  const data = await response.json();
-  return data.products;
+  const productsSnapshot = await getDocs(productsCollection);
+
+  return productsSnapshot.docs.map((productDocument) => ({
+    id: productDocument.id,
+    ...productDocument.data(),
+  }));
 }
 
 export async function getProductById(productId) {
-  const response = await fetch(`${BASE_URL}/products/${productId}`);
+  const productDocument = doc(db, PRODUCTS_COLLECTION_NAME, productId);
 
-  if (response.status === 404) return null;
-  if (!response.ok) throw new Error("No se pudo obtener el producto");
+  const productSnapshot = await getDoc(productDocument);
 
-  return response.json();
+  return {
+    id: productSnapshot.id,
+    ...productSnapshot.data(),
+  };
 }
 
 export async function createProduct(product) {
-  const response = await fetch(`${BASE_URL}/products/add`, {
+  const response = await fetch(`/products/add`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(product),

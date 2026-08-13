@@ -1,36 +1,12 @@
-import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
-import { getProductById } from "../../services/products.service";
 import styles from "./ProductDetail.module.css";
+import { useProduct } from "../../hooks/useProduct";
 
 const ProductDetail = () => {
   const { productId } = useParams();
   const { addToCart } = useCart();
-  const [product, setProduct] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    async function loadProduct() {
-      setIsLoading(true);
-      setError(null);
-      setProduct(null);
-
-      try {
-        const productFromApi = await getProductById(productId);
-        setProduct(productFromApi);
-      } catch (requestError) {
-        console.error(requestError);
-        setError("No pudimos cargar el producto.");
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    if (productId) loadProduct();
-  }, [productId]);
-
+  const { product, isLoading, error } = useProduct(productId);
   if (isLoading) {
     return <div className={styles.state}>Cargando detalle...</div>;
   }
