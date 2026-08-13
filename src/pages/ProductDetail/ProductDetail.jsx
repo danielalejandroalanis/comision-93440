@@ -8,19 +8,42 @@ const ProductDetail = () => {
   const { productId } = useParams();
   const { addToCart } = useCart();
   const [product, setProduct] = useState(null);
-  const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
-    getProductById(productId)
-      .then(setProduct)
-      .catch(() => setError(true));
+    async function loadProduct() {
+      setIsLoading(true);
+      setError(null);
+      setProduct(null);
+
+      try {
+        const productFromApi = await getProductById(productId);
+        setProduct(productFromApi);
+      } catch (requestError) {
+        console.error(requestError);
+        setError("No pudimos cargar el producto.");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    if (productId) loadProduct();
   }, [productId]);
-  if (error)
+
+  if (isLoading) {
+    return <div className={styles.state}>Cargando detalle...</div>;
+  }
+
+  if (error || !product) {
     return (
       <div className={styles.state}>
-        No encontramos el producto. <Link to="/">Volver al inicio</Link>
+        {error || "No encontramos el producto."}{" "}
+        <Link to="/">Volver al inicio</Link>
       </div>
     );
-  if (!product) return <div className={styles.state}>Cargando detalle...</div>;
+  }
+
   return (
     <>
       <div className={styles.breadcrumbs}>

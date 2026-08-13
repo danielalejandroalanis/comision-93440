@@ -3,6 +3,7 @@ import { useCart } from "../../context/CartContext";
 import styles from "./Cart.module.css";
 
 const Cart = () => {
+  
   const {
     cart,
     totalItems,
@@ -11,6 +12,7 @@ const Cart = () => {
     removeFromCart,
     clearCart,
   } = useCart();
+
   if (!cart.length)
     return (
       <section className={styles.empty}>
