@@ -1,17 +1,17 @@
+import { Outlet } from "react-router-dom";
 import Header from "../components/Header/Header";
+import styles from "./Layout.module.css";
 
-const Layout = ({ children }) => {
-  return (
-    <div className="container">
-      <Header
-        title="Clase 02 de React en CoderHouse!"
-        subtitle="Hoy vemos useState y componentes de React!"
-        onClick={() => console.log("Funcion")}
-      />
-      <div>{children}</div>
-      <div className="footer">Footer</div>
-    </div>
-  );
-};
-
+const Layout = () => (
+  <div className={styles.layout}>
+    <Header />
+    <main className={styles.main}>
+      <Outlet />
+    </main>
+    <footer className={styles.footer}>
+      <strong>NovaShop</strong>
+      <span>Productos para disfrutar todos los días.</span>
+    </footer>
+  </div>
+);
 export default Layout;

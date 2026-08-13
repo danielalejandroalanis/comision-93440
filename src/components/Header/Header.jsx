@@ -1,14 +1,35 @@
-import "./Header.css";
-import logo from "../../../src/assets/logo-coder.png";
+import { NavLink } from "react-router-dom";
+import { useCart } from "../../context/CartContext";
+import styles from "./Header.module.css";
 
-const Header = ({ title, subtitle }) => {
+const Header = () => {
+  const { totalItems } = useCart();
+  const linkClass = ({ isActive }) =>
+    isActive ? `${styles.link} ${styles.active}` : styles.link;
   return (
-    <div className="header">
-      <h1>{title}</h1>
-      <h2>{subtitle}</h2>
-      <img src={logo} alt="logo" width={100} />
-    </div>
+    <header className={styles.header}>
+      <nav className={styles.nav} aria-label="Navegación principal">
+        <NavLink to="/" className={styles.brand}>
+          <span>✦</span> NovaShop
+        </NavLink>
+        <div className={styles.links}>
+          <NavLink to="/" end className={linkClass}>
+            Inicio
+          </NavLink>
+          <NavLink to="/productos/nuevo" className={linkClass}>
+            Crear producto
+          </NavLink>
+          <NavLink
+            to="/carrito"
+            className={`${styles.link} ${styles.cart}`}
+            aria-label={`Carrito con ${totalItems} productos`}
+          >
+            <span aria-hidden="true">🛒</span> Carrito{" "}
+            <span className={styles.badge}>{totalItems}</span>
+          </NavLink>
+        </div>
+      </nav>
+    </header>
   );
 };
-
 export default Header;

@@ -5,16 +5,18 @@ const withProducts = (Component) => {
   return function ProductsContainer(props) {
     const [products, setProducts] = useState([]);
     const [isError, setIsError] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
       getProducts()
         .then((products) => {
           setProducts(products.products);
         })
-        .catch((error) => setIsError(true));
+        .catch(() => setIsError(true))
+        .finally(() => setIsLoading(false));
     }, []);
 
-    return <Component {...props} products={products} isError={isError} />;
+    return <Component {...props} products={products} isError={isError} isLoading={isLoading} />;
   };
 };
 
