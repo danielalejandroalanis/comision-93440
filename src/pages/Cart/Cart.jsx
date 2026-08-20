@@ -1,9 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import styles from "./Cart.module.css";
 
 const Cart = () => {
-  
   const {
     cart,
     totalItems,
@@ -12,6 +11,8 @@ const Cart = () => {
     removeFromCart,
     clearCart,
   } = useCart();
+
+  const navigate = useNavigate()
 
   if (!cart.length)
     return (
@@ -77,7 +78,7 @@ const Cart = () => {
             <span>Total</span>
             <strong>US$ {totalPrice.toFixed(2)}</strong>
           </div>
-          <button>Continuar compra</button>
+          <button onClick={() => navigate("/checkout")}>Continuar compra</button>
           <small>Compra protegida y pagos seguros.</small>
         </aside>
       </div>

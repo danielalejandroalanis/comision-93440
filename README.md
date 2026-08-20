@@ -15,3 +15,49 @@ The React Compiler is not enabled on this template because of its impact on dev 
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
 # comision-93440
+
+
+Modelo de datos de una compra confirmada
+
+{
+    clave: valor
+}
+
+clave > el nombre que nosotros queremos ponerle
+valor > tiene un tipo definido (string, boolean, number (int, float/double))
+
+{
+    id: id del producto
+    name: nombre del producto
+    qtyItem: cantidad del producto
+    totalAmount: monto total
+    buyer: datos del comprador
+    status: el estado de la compra
+    createdAt: fecha de creacion
+}
+
+Products:
+{
+    id,
+    nombre,
+    price,
+    raiting
+}
+
+Buy:
+{
+    items: Products[],
+    buyer: {
+        name: string,
+        address: {
+            street: string,
+            number: int,
+            country: string,
+            zip: string
+        },
+        identification: string,
+    },
+    totalAmount: double,
+    status: string,
+    createdAt: timestamp
+}

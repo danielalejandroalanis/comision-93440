@@ -1,7 +1,10 @@
-import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, addDoc } from "firebase/firestore";
 import { db } from "../firebase/config";
 
-import { PRODUCTS_COLLECTION_NAME } from "../constants/products";
+import {
+  PRODUCTS_COLLECTION_NAME,
+  SELLS_COLLECTION_NAME,
+} from "../constants/products";
 
 export async function getProducts() {
   const productsCollection = collection(db, PRODUCTS_COLLECTION_NAME);
@@ -25,12 +28,13 @@ export async function getProductById(productId) {
   };
 }
 
-export async function createProduct(product) {
-  const response = await fetch(`/products/add`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(product),
-  });
-  if (!response.ok) throw new Error("No se pudo crear el producto");
-  return response.json();
+export async function createSell(sell) {
+  const sellsCollection = collection(db, SELLS_COLLECTION_NAME);
+
+  const newSell = await addDoc(sellsCollection, sell);
+
+  return {
+    id: newSell.id,
+    status: "created",
+  };
 }

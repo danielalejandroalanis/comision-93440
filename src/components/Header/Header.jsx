@@ -16,9 +16,6 @@ const Header = () => {
           <NavLink to="/" end className={linkClass}>
             Inicio
           </NavLink>
-          <NavLink to="/productos/nuevo" className={linkClass}>
-            Crear producto
-          </NavLink>
           <NavLink
             to="/carrito"
             className={`${styles.link} ${styles.cart}`}
